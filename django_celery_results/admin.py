@@ -56,6 +56,7 @@ class TaskResultAdmin(admin.ModelAdmin):
         }),
     )
     actions = ('resubmit_task',)
+    change_actions = ('resubmit_task',)
 
     def resubmit_task(self, request, queryset):
         for task_result in queryset:
