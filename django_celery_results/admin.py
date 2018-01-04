@@ -1,7 +1,8 @@
 """Result Task Admin interface."""
 from __future__ import absolute_import, unicode_literals
 
-from django.contrib import admin
+from celery.states import FAILURE
+from django.contrib import admin, messages
 
 from .models import TaskResult
 
@@ -42,6 +43,21 @@ class TaskResultAdmin(admin.ModelAdmin):
             'classes': ('extrapretty', 'wide')
         }),
     )
+    actions = ('resubmit_task',)
+
+    def resubmit_task(self, request, queryset):
+        for task_result in queryset:
+            if not task_result.status == FAILURE:
+                messages.warning(request, 'Task ID {}: can only resubmit failed tasks, current status is {}'.format(task_result.task_id, task_result.status))
+
+            try:
+                task_result.resubmit()
+                messages.success(request, 'Task ID {}: resubmitted successfully'.format(task_result.task_id))
+
+            except Exception as e:
+                messages.error(request, str(e))
+
+    resubmit_task.short_description = "Resubmit task(s) to the queue"
 
 
 admin.site.register(TaskResult, TaskResultAdmin)

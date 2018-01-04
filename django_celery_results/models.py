@@ -60,3 +60,8 @@ class TaskResult(models.Model):
 
     def __str__(self):
         return '<Task: {0.task_id} ({0.status})>'.format(self)
+
+    def resubmit(self):
+        """Submit a copy of this task with the same args+kwargs"""
+        from celery import current_app
+        return current_app.send_task(self.task_name, args=eval(self.task_args), kwargs=eval(self.task_kwargs))
