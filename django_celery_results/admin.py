@@ -10,8 +10,10 @@ class TaskResultAdmin(admin.ModelAdmin):
     """Admin-interface for results of tasks."""
 
     model = TaskResult
-    list_display = ('task_id', 'date_done', 'status')
+    list_display = ('task_id', 'task_name', 'date_done', 'status')
+    list_filter = ('status', 'date_done')
     readonly_fields = ('date_done', 'result', 'hidden', 'meta')
+    search_fields = ('task_id', 'task_name')
     fieldsets = (
         (None, {
             'fields': (
