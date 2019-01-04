@@ -51,12 +51,13 @@ class TaskResultAdmin(admin.ModelAdmin):
             if not task_result.status == FAILURE:
                 messages.warning(request, 'Task ID {}: can only resubmit failed tasks, current status is {}'.format(task_result.task_id, task_result.status))
 
-            try:
-                task_result.resubmit()
-                messages.success(request, 'Task ID {}: resubmitted successfully'.format(task_result.task_id))
+            else:
+                try:
+                    task_result.resubmit()
+                    messages.success(request, 'Task ID {}: resubmitted successfully'.format(task_result.task_id))
 
-            except Exception as e:
-                messages.error(request, str(e))
+                except Exception as e:
+                    messages.error(request, str(e))
 
     resubmit_task.short_description = "Resubmit task(s) to the queue"
 
