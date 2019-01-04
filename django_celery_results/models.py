@@ -111,7 +111,11 @@ class TaskResult(models.Model):
     def resubmit(self):
         """Submit a copy of this task with the same args+kwargs"""
         from celery import current_app
-        result = current_app.send_task(self.task_name, args=eval(self.task_args), kwargs=eval(self.task_kwargs))
+
+        task_args = current_app.backend.decode(self.task_args)
+        task_kwargs = current_app.backend.decode(self.task_kwargs)
+
+        result = current_app.send_task(self.task_name, args=task_args, kwargs=task_kwargs)
         self.delete()
         return result
 
