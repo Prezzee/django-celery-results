@@ -4,7 +4,7 @@ from __future__ import absolute_import, unicode_literals
 from celery import states
 from celery.five import python_2_unicode_compatible
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from . import managers
 
