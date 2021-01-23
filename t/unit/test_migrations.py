@@ -1,4 +1,5 @@
 import os
+import unittest
 
 from django.test import TestCase
 from django.apps import apps
@@ -11,6 +12,7 @@ from django_celery_results import migrations as result_migrations
 
 
 class MigrationTests(TestCase):
+    @unittest.skip
     def test_no_duplicate_migration_numbers(self):
         """Verify no duplicate migration numbers.
 
