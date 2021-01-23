@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('django_celery_results', '0007_remove_taskresult_hidden'),
+        ('celery_results', '0007_remove_taskresult_hidden'),
     ]
 
     operations = [

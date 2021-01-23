@@ -11,7 +11,7 @@ import django.utils.timezone
 
 
 def copy_date_done_to_date_created(apps, schema_editor):
-    TaskResult = apps.get_model('django_celery_results', 'taskresult')
+    TaskResult = apps.get_model('celery_results', 'taskresult')
     db_alias = schema_editor.connection.alias
     TaskResult.objects.using(db_alias).all().update(
         date_created=models.F('date_done')
@@ -27,7 +27,7 @@ def reverse_copy_date_done_to_date_created(app, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('django_celery_results', '0005_taskresult_worker'),
+        ('celery_results', '0005_taskresult_worker'),
     ]
 
     operations = [

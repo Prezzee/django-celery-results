@@ -7,12 +7,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     replaces = [
-        ('django_celery_results', '0002_auto_20180104_0301'),
-        ('django_celery_results', '0003_sync_to_upstream'),
+        ('celery_results', '0002_auto_20180104_0301'),
+        ('celery_results', '0003_sync_to_upstream'),
     ]
 
     dependencies = [
-        ('django_celery_results', '0001_initial'),
+        ('celery_results', '0001_initial'),
     ]
 
     operations = [
