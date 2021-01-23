@@ -6,27 +6,23 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-    replaces = [
-        ('django_celery_results', '0002_auto_20180104_0301'),
-        ('django_celery_results', '0003_sync_to_upstream'),
-    ]
 
     dependencies = [
-        ('django_celery_results', '0001_initial'),
+        ('django_celery_results', '0002_auto_20180104_0301'),
     ]
 
     operations = [
-        migrations.AddField(
+        migrations.AlterField(
             model_name='taskresult',
             name='task_args',
             field=models.TextField(null=True, verbose_name='task arguments'),
         ),
-        migrations.AddField(
+        migrations.AlterField(
             model_name='taskresult',
             name='task_kwargs',
             field=models.TextField(null=True, verbose_name='task kwargs'),
         ),
-        migrations.AddField(
+        migrations.AlterField(
             model_name='taskresult',
             name='task_name',
             field=models.CharField(max_length=255, null=True,
