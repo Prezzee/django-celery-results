@@ -4,11 +4,11 @@ import json
 from celery import maybe_signature
 from celery.backends.base import BaseDictBackend
 from celery.exceptions import ChordError
-from celery.result import allow_join_result
+from celery.result import GroupResult, allow_join_result
 from celery.utils.serialization import b64encode, b64decode
 from celery.utils.log import get_logger
 from kombu.exceptions import DecodeError
-from django.db import transaction
+from django.db import transaction, router
 
 from ..models import TaskResult, ChordCounter
 
@@ -116,8 +116,14 @@ class DatabaseBackend(BaseDictBackend):
         """Delete expired metadata."""
         self.TaskModel._default_manager.delete_expired(self.expires)
 
-    def apply_chord(self, header_result, body, **kwargs):
+    def apply_chord(self, header_result_args, body, **kwargs):
         """Add a ChordCounter with the expected number of results"""
+        if not isinstance(header_result_args, GroupResult):
+            # Celery 5.1 provides the GroupResult args
+            header_result = self.app.GroupResult(*header_result_args)
+        else:
+            # celery <5.1 will pass a GroupResult object
+            header_result = header_result_args
         results = [r.as_tuple() for r in header_result]
         data = json.dumps(results)
         ChordCounter.objects.create(
@@ -130,7 +136,7 @@ class DatabaseBackend(BaseDictBackend):
         if not gid or not tid:
             return
         call_callback = False
-        with transaction.atomic():
+        with transaction.atomic(using=router.db_for_write(ChordCounter)):
             # We need to know if `count` hits 0.
             # wrap the update in a transaction
             # with a `select_for_update` lock to prevent race conditions.
