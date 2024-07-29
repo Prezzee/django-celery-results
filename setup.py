@@ -7,7 +7,7 @@ import sys
 import codecs
 
 import setuptools
-import setuptools.command.test
+#import setuptools.command.test
 
 try:
     import platform
@@ -112,7 +112,7 @@ else:
 
 # -*- %%% -*-
 
-
+"""
 class pytest(setuptools.command.test.test):
     user_options = [('pytest-args=', 'a', 'Arguments to pass to pytest')]
 
@@ -123,6 +123,7 @@ class pytest(setuptools.command.test.test):
     def run_tests(self):
         import pytest
         sys.exit(pytest.main(self.pytest_args))
+"""
 
 setuptools.setup(
     name=NAME,
@@ -140,7 +141,7 @@ setuptools.setup(
     classifiers=classifiers,
     install_requires=reqs('default.txt'),
     tests_require=reqs('test.txt') + reqs('test-django.txt'),
-    cmdclass={'test': pytest},
+#    cmdclass={'test': pytest},
     entry_points={
         'celery.result_backends': [
             'django-db = django_celery_results.backends:DatabaseBackend',
